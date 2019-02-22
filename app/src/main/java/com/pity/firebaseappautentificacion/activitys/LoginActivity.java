@@ -1,22 +1,20 @@
 package com.pity.firebaseappautentificacion.activitys;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.pity.firebaseappautentificacion.R;
+import com.pity.firebaseappautentificacion.presenters.LoginPresenter;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -28,11 +26,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText etxPassword;
     private TextView txOlvidastePassword;
 
+    private LoginPresenter presenter;
+
     private FirebaseAuth firebaseAuth;
 
-    private ProgressDialog progressDialog;
+    boolean olvidatePassword;
+    boolean regitro;
 
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (firebaseAuth.getCurrentUser() != null){
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +48,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        presenter = new LoginPresenter(this, firebaseAuth);
+        olvidatePassword = false;
+        regitro = false;
 
-        if (firebaseAuth.getCurrentUser() != null){
+        if (firebaseAuth.getCurrentUser() != null) {
             // Actividad del perfil
             finish();
             startActivity(new Intent(getApplicationContext(), MenuActivity.class));
@@ -58,7 +69,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
         txOlvidastePassword.setOnClickListener(this);
 
-        progressDialog = new ProgressDialog(this);
 
     }
 
@@ -66,55 +76,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
 
-        if (view == btnRegistrate){
-            Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
+        if (view == btnRegistrate) {
+            regitro = true;
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
         }
-        if (view == btnLogin){
-            userLogin();
+        if (view == btnLogin) {
+            String email =  etxMail.getText().toString().trim();
+            String password = etxPassword.getText().toString().trim();
+            presenter.loginUser(email, password);
+
+
         }
-        if (view == txOlvidastePassword){
-            startActivity(new Intent(LoginActivity.this,OlvidasteContraseniaActivity.class));
+        if (view == txOlvidastePassword) {
+            olvidatePassword = true;
+            startActivity(new Intent(LoginActivity.this, OlvidasteContraseniaActivity.class));
 
         }
-
-
-
 
 
     }
 
-    private void userLogin() {
-        String email = etxMail.getText().toString().trim();
-        String password = etxPassword.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email)){
-            Toast.makeText(LoginActivity.this,"No se ingreso mail",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)){
-            Toast.makeText(LoginActivity.this,"No se ingreso contraseña",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        progressDialog.setMessage("Iniciando sesion...");
-        progressDialog.show();
-
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-
-                        if(task.isSuccessful()){
-                            finish();
-                            startActivity(new Intent(getApplicationContext(), MenuActivity.class));
-                        }else{
-                            Toast.makeText(LoginActivity.this , "Usuario o contraseña incorrecta" ,Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                });
-    }
 }

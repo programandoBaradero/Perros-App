@@ -1,5 +1,6 @@
 package com.pity.firebaseappautentificacion.activitys;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.pity.firebaseappautentificacion.R;
+import com.pity.firebaseappautentificacion.presenters.OlvidasteContraseniaPresenter;
 
 public class OlvidasteContraseniaActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -21,6 +23,7 @@ public class OlvidasteContraseniaActivity extends AppCompatActivity implements V
     private Button btnEnviar;
 
     private FirebaseAuth firebaseAuth;
+    private OlvidasteContraseniaPresenter presenter;
 
 
     @Override
@@ -33,35 +36,20 @@ public class OlvidasteContraseniaActivity extends AppCompatActivity implements V
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        presenter = new OlvidasteContraseniaPresenter(this, firebaseAuth);
+
         btnEnviar.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         if (view == btnEnviar){
-            enviarMail();
+            String email = etxMail.getText().toString().trim();
+            presenter.enviarEmail(email);
+            startActivity(new Intent(OlvidasteContraseniaActivity.this, LoginActivity.class));
+            finish();
         }
     }
 
-    public void enviarMail(){
-        String email = etxMail.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email)){
-            Toast.makeText(OlvidasteContraseniaActivity.this,"No se ingreso mail",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        firebaseAuth.sendPasswordResetEmail(email)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(OlvidasteContraseniaActivity.this, "Revisa tu email para restablecer contraseña",Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(OlvidasteContraseniaActivity.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-
-    }
 }

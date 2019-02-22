@@ -9,7 +9,7 @@ public class PerroPerdido {
     public PerroPerdido() {
     }
 
-    public PerroPerdido(String nombre, String descripcion, int foto_perfil) {
+    public PerroPerdido(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
 

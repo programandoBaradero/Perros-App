@@ -24,6 +24,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
 
         firebaseAuth = FirebaseAuth.getInstance();
+
 
         cardViewAdoptar = findViewById(R.id.cardViewAdoptar);
         cardViewPerdidos = findViewById(R.id.cardViewPerdidos);

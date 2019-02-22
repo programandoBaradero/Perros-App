@@ -7,32 +7,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.annotations.NotNull;
 import com.pity.firebaseappautentificacion.R;
 import com.pity.firebaseappautentificacion.models.PerroPerdido;
 
 import java.util.ArrayList;
 
 
-public class PerrosPerdidosAdapter extends RecyclerView.Adapter<PerrosPerdidosAdapter.ViewHolder> {
-    private Context context;
+public class PerrosPerdidosAdapter extends RecyclerView.Adapter<PerrosPerdidosAdapter.PerrosPerdidoViewHolder> {
+    private Context mContext;
     private ArrayList<PerroPerdido> perroPerdidosList;
     private int layout;
 
     public PerrosPerdidosAdapter(Context context, int layout, ArrayList<PerroPerdido> list){
-        this.context = context;
+        this.mContext = context;
         this.layout = layout;
         this.perroPerdidosList = list;
     }
 
 
+    @NotNull
     @Override
-    public PerrosPerdidosAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int ViewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(layout , parent,false);
-        return new ViewHolder(itemView);
+    public PerrosPerdidoViewHolder onCreateViewHolder(ViewGroup parent, int ViewType) {
+        View itemView = LayoutInflater.from(mContext).inflate(layout , parent,false);
+        return new PerrosPerdidoViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NotNull PerrosPerdidoViewHolder holder, int position) {
 
         PerroPerdido currentDog = perroPerdidosList.get(position);
 
@@ -43,14 +45,17 @@ public class PerrosPerdidosAdapter extends RecyclerView.Adapter<PerrosPerdidosAd
 
     @Override
     public int getItemCount() {
+        if (perroPerdidosList.size() > 0){
+            return perroPerdidosList.size();
+        }
         return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class PerrosPerdidoViewHolder extends RecyclerView.ViewHolder {
         TextView nombre;
         TextView descripcion;
 
-        public ViewHolder(View item) {
+        public PerrosPerdidoViewHolder(@NotNull View item) {
             super(item);
             nombre =  item.findViewById(R.id.text_view_nombre_rw);
             descripcion = item.findViewById(R.id.text_view_descripcion_rw);

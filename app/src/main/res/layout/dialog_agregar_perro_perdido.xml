@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="15dp">
+
+
+    <EditText
+        android:id="@+id/edit_text_nombre_perro_perdido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="5dp"/>
+
+    <EditText
+        android:id="@+id/edit_text_descripcion_perro_perdido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:hint="Descripcion"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/edit_text_nombre_perro_perdido"/>
+
+    <Button
+        android:id="@+id/button_agregar_perro_perdido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_descripcion_perro_perdido"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/custom_button_contacto"
+        android:text="Agregar"
+        android:textColor="@color/colorIconText" />
+
+    <Button
+        android:id="@+id/button_cancelar_perro_perdido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_descripcion_perro_perdido"
+
+
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_toStartOf="@+id/button_agregar_perro_perdido"
+        android:background="@drawable/custom_button_contacto"
+        android:text="Cancelar"
+        android:textColor="@color/colorIconText" />
+
+</RelativeLayout>
